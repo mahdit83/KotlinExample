@@ -30,12 +30,13 @@ class MainActivity : AppCompatActivity() {
         var nullVal : String? = null
 
         fun returnNull(): String? {
-            return "Mahdi"
+            return null
         }
 
         var nullVal2 = returnNull()
 
         if(nullVal2 != null){
+            //if you as a developer are sure of the result never being null, use !! sure operator as an assertion
             logg("*** Length :${nullVal2!!.length}")
         }
 
