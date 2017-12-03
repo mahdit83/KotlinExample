@@ -14,20 +14,53 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         variablesExample()
-        rangeExanples()
-        conditionalExamples()
-        loopingExample()
+//        rangeExanples()
+//        conditionalExamples()
+//        loopingExample()
         functionsExample()
-        collectionOperatorExample()
-        exceptionHandlerExample()
-        mapExample()
-        classExample()
-        nullcheckAndSmartCastExample()
+//        extensionFunctionExample()
+        inlineFunctionExample()
+//        collectionOperatorExample()
+//        exceptionHandlerExample()
+//        mapExample()
+//        classExample()
+//        nullcheckAndSmartCastExample()
+    }
+
+    private fun inlineFunctionExample() {
+
+
+        fun operation( op: () -> Unit){
+            logg("before op")
+            op()
+            logg("after op")
+
+        }
+
+        operation { logg("this is main function") }
+    }
+
+    private fun extensionFunctionExample() {
+
+//          Kotlin, similar to C# and Gosu, provides the ability to extend a class with
+//          new functionality without having to inherit from the class or use any type of
+//          design pattern such as Decorator. This is done via special declarations called extensions.
+//          Kotlin supports extension functions and extension properties.
+
+        fun MutableList<Int>.swap(index1: Int ,index2 :Int){
+            val tmp = this[index1] // 'this' corresponds to the list
+            this[index1] = this[index2]
+            this[index2] = tmp
+        }
+
+        val myList = mutableListOf(0,1,2,3,4,5)
+        myList.swap(0,5)
+        logg("List : ${myList}")
     }
 
     private fun nullcheckAndSmartCastExample() {
 
-        var nullVal : String? = null
+        var nullVal: String? = null
 
         fun returnNull(): String? {
             return null
@@ -35,57 +68,58 @@ class MainActivity : AppCompatActivity() {
 
         var nullVal2 = returnNull()
 
-        if(nullVal2 != null){
+        if (nullVal2 != null) {
             //if you as a developer are sure of the result never being null, use !! sure operator as an assertion
             logg("*** Length :${nullVal2!!.length}")
         }
 
-        val nullVal3 : String = returnNull() ?: "No name"
+        val nullVal3: String = returnNull() ?: "No name"
         logg("nullVal3 : $nullVal3")
     }
 
     private fun classExample() {
 
-        class Dog(name : String , height: Double ,var owner : String) : Animal (name, height){
+        class Dog(name: String, height: Double, var owner: String) : Animal(name, height) {
 
-            override fun getInfo() :Unit {
+            override fun getInfo(): Unit {
                 logg("$name is $height and  its owner is $owner")
             }
         }
 
-        val bowser = Animal("Bowsere" , 13.5)
+        val bowser = Animal("Bowsere", 13.5)
         bowser.getInfo()
 
-        val spot = Dog("titan",2.5,"Shaby")
+        val spot = Dog("titan", 2.5, "Shaby")
         spot.getInfo()
 
-        val nichi = Bird("Nichi",true)
+        val nichi = Bird("Nichi", true)
         nichi.fly(134.5)
 
     }
 
-    interface Flyable{
-        var flies : Boolean
-        fun fly(distMile : Double) : Unit
+    interface Flyable {
+        var flies: Boolean
+        fun fly(distMile: Double): Unit
     }
 
-    class Bird constructor(val name : String , override var flies: Boolean = true): Flyable{
+    class Bird(val name: String, override var flies: Boolean = true) : Flyable {
         override fun fly(distMile: Double) {
-            if(flies){
+            if (flies) {
                 System.err.println("$name flies $distMile miles")
             }
 
         }
     }
 
-    open class Animal(val name : String , val height: Double){
+    open class Animal(val name: String, val height: Double) {
 
         init {
             val regex = Regex(".*\\d+.*")
 
-            require(!name.matches(regex)){"Animal names can not contain numbers"}
-            require(height > 0){"Height must grater than 0"}
+            require(!name.matches(regex)) { "Animal names can not contain numbers" }
+            require(height > 0) { "Height must grater than 0" }
         }
+
         open fun getInfo(): Unit {
             System.err.println("$name is $height")
 
@@ -94,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun mapExample() {
 
-        val map = mutableMapOf<Int , Any?>()
+        val map = mutableMapOf<Int, Any?>()
         val map2 = mutableMapOf(1 to "Tajik", 2 to 25)
         map[1] = "Mahdi"
         map[2] = 35
@@ -103,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
         map.remove(2)
 
-        for((x,y) in map){
+        for ((x, y) in map) {
             logg("Key :$x Value :$y")
         }
 
@@ -112,27 +146,27 @@ class MainActivity : AppCompatActivity() {
     private fun exceptionHandlerExample() {
 
         //mutable list - changeable
-        var list1 : MutableList<Int> = mutableListOf(1,2,3,4,5,6)
+        var list1: MutableList<Int> = mutableListOf(1, 2, 3, 4, 5, 6)
 
         //emutable list - unchangeable
-        val list2 :  List<Int> = listOf(1,2,3,4,5,6)
+        val list2: List<Int> = listOf(1, 2, 3, 4, 5, 6)
 
     }
 
     private fun collectionOperatorExample() {
 
-        val myList  = 1..20
+        val myList = 1..20
 
-        val listSum = myList.reduce{x, y -> x + y}
+        val listSum = myList.reduce { x, y -> x + y }
         logg("Reduce Sum : $listSum")
 
         //sum + given number
-        val listSum2 = myList.fold(1){x, y -> x + y}
+        val listSum2 = myList.fold(1) { x, y -> x + y }
         logg("Fold Sum : $listSum2")
 
         //if condition
-        logg("Evens : ${myList.any { it % 2 ==0 } }")
-        logg("Evens : ${myList.all { it % 2 ==0 } }")
+        logg("Evens : ${myList.any { it % 2 == 0 }}")
+        logg("Evens : ${myList.all { it % 2 == 0 }}")
 
         val biggerThan3 = myList.filter { it > 3 }
         biggerThan3.forEach { n -> logg(" $n > 3") }
@@ -146,68 +180,70 @@ class MainActivity : AppCompatActivity() {
     private fun functionsExample() {
 
 
-        fun add(num1 : Int , num2 : Int):Int = num1 + num2
-        logg("5+4= ${add(5,4)}")
+        fun add(num1: Int, num2: Int): Int = num1 + num2
+        logg("5+4= ${add(5, 4)}")
 
 
-        fun sayHellow(name: String){
+        fun sayHellow(name: String) {
             logg("Hello $name")
         }
-        //or -- use unit when there is no return type but want to do some thing
-        fun sayHellow2(name :String) : Unit = logg("Hello $name")
 
-        fun nextTwo(num : Int) :Pair<Int , Int>{
-            return Pair(num+1, num+2)
+        //or -- use unit when there is no return type but want to do some thing
+        fun sayHellow2(name: String): Unit = logg("Hello $name")
+
+        fun nextTwo(num: Int): Pair<Int, Int> {
+            return Pair(num + 1, num + 2)
         }
 
-        val (two , three) = nextTwo(1)
+        val (two, three) = nextTwo(1)
         logg("1 $two $three")
 
-        logg("Sum : ${getSum(1,2,4,5)}")
-        logg("Sum : ${getSum(234,54,6,7,8,89,7,56,54)}")
+        logg("Sum : ${getSum(1, 2, 4, 5)}")
+        logg("Sum : ${getSum(234, 54, 6, 7, 8, 89, 7, 56, 54)}")
 
 
         //fun with lambda
-        val multiply = {num1 :Int, num2 : Int -> num1 * num2}
-        logg("5 x 12 = ${multiply(5,13)}")
+        val multiply = { num1: Int, num2: Int -> num1 * num2 }
+        logg("5 x 12 = ${multiply(5, 13)}")
 
         //Factorial
-        logg("$5! : ${fact(5)}")
+        logg("$5! : ${fact(30)}")
 
         //func that creates another func
         val multi3 = makeMathFun(3)
         logg("5 * 3 = ${multi3(5)}")
 
         //func that uses func
+        val multiply2 = { num1: Int -> num1 * 2 }
+        val numList2 = arrayOf(1, 2, 3, 4, 5)
 
-        val multiply2 = { num1:  Int -> num1 * 2}
-        val numList2 = arrayOf(1,2,3,4,5)
-
-        mathonList(numList2 , multiply2)
+        mathonList(numList2, multiply2)
 
 
     }
 
-    fun mathonList(numList : Array<Int> , myFunc: (num: Int)-> Int){
-        for(num in numList){
+    fun mathonList(numList: Array<Int>, myFunc: (num: Int) -> Int) {
+        for (num in numList) {
             logg("MathOnList ${myFunc(num)}")
         }
     }
 
-    fun makeMathFun( num1: Int): (Int) -> Int = {num2 -> num1 *  num2}
+    fun makeMathFun(num1: Int): (Int) -> Int = { num2 -> num1 * num2 }
 
-    fun fact(x : Long) : Long {
-         fun factTail(y : Long , z :Long):Long {
-            return if (y == 0L)  z
-            else  {
-                return factTail(y-1 ,y*z)
+    //tailrec : cause to kotlin check if it can implement recursive by loop it
+    // will do that for better performance
+    fun fact(x: Long): Long {
+        tailrec fun factTail(y: Long, z: Long): Long {
+            return if (y == 0L) z
+            else {
+                return factTail(y - 1, y * z)
             }
         }
-        return factTail(x ,1)
+        return factTail(x, 1)
     }
 
 
-    fun getSum(vararg nums : Int) : Int{
+    fun getSum(vararg nums: Int): Int {
 
         var sum = 0
         nums.forEach { n -> sum += n }
@@ -244,14 +280,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         //--4
-        var arr3: Array<Int> = arrayOf(3,6,9)
+        var arr3: Array<Int> = arrayOf(3, 6, 9)
 
-        for(i in arr3.indices){
+        for (i in arr3.indices) {
             logg("Multiple 3: ${arr3[i]}")
         }
 
-        for((index , value) in arr3.withIndex()){
-            logg("Index : $index value: $value" )
+        for ((index, value) in arr3.withIndex()) {
+            logg("Index : $index value: $value")
         }
     }
 
